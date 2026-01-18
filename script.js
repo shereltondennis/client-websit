@@ -147,3 +147,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// payment script
+document.addEventListener('DOMContentLoaded', () => {
+    const proceedBtn = document.getElementById('proceed-to-pay-btn'); // Matches your previous ID
+    const customInput = document.getElementById('custom-amt-input');
+
+    if (proceedBtn) {
+        proceedBtn.addEventListener('click', () => {
+            // Find which amount is selected
+            const activeBtn = document.querySelector('.donation-amt-btn.active-amt');
+            const amount = activeBtn ? activeBtn.getAttribute('data-val') : customInput.value;
+
+            if (amount > 0) {
+                // OPEN NEW WINDOW
+                // This passes the amount to the new window using the URL
+                window.open(checkout.html?amount=${amount}, '_blank', 'width=500,height=700');
+            } else {
+                alert("Please select or enter an amount first.");
+            }
+        });
+    }
+});

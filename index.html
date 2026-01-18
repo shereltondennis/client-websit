@@ -18,7 +18,7 @@
                 <li><a href="#involved">Get Involved</a></li>
                 <li><a href="#events">Events</a></li>
             </ul>
-            <a href="#donate" class="cta-btn">Donate Now</a>
+            <a href="#payment-portal" class="cta-btn">Donate Now</a>
         </nav>
     </header>
 
@@ -92,27 +92,65 @@
         </div>
     </section>
 <!-- below is the donate now button -->
-    <section id="donate" class="donation-section">
-    <div class="donation-container">
-        <h2>Make a Difference Today</h2>
-        <p>100% of your donation goes directly to our field programs.</p>
+   <section id="payment-portal" style="padding: 60px 5%; background: #f8fafc;">
+    <div style="max-width: 1000px; margin: 0 auto;">
+        
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="color: #1e293b; font-size: 2rem;">Secure Payment Gateway</h2>
+            <p style="color: #64748b;">Select your preferred method to complete your donation</p>
+        </div>
 
-        <div class="donation-box">
-            <div class="frequency-toggle">
-                <button class="toggle-btn active" data-type="one-time">One-Time</button>
-                <button class="toggle-btn" data-type="monthly">Monthly</button>
-            </div>
-
-            <div class="amount-grid">
-                <button class="amount-btn" data-amount="25">$25</button>
-                <button class="amount-btn" data-amount="50">$50</button>
-                <button class="amount-btn active" data-amount="100">$100</button>
-                <input type="number" placeholder="Custom Amount ($)" class="custom-amount">
-            </div>
-
-            <button class="submit-donation">Proceed to Payment</button>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
             
-            <p class="tax-info"><i class="fas fa-shield-alt"></i> Secure, tax-deductible donation.</p>
+            <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-top: 5px solid #f39c12;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="fas fa-mobile-alt" style="color: #f39c12; font-size: 1.5rem;"></i>
+                    <h3 style="color: #1e293b;">Mobile Money</h3>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
+                        <input type="radio" name="gateway-momo" value="Orange" checked> 
+                        <span style="font-weight: 600;">Orange Money</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
+                        <input type="radio" name="gateway-momo" value="Lonestar"> 
+                        <span style="font-weight: 600;">Lonestar MTN</span>
+                    </label>
+                    <input type="tel" placeholder="Number (e.g. 077...)" style="padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <button onclick="handleGatewayPay('MoMo')" style="background: #f39c12; color: white; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Pay with MoMo</button>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-top: 5px solid #3b82f6;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="fas fa-credit-card" style="color: #3b82f6; font-size: 1.5rem;"></i>
+                    <h3 style="color: #1e293b;">ATM / Card</h3>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <input type="text" placeholder="Card Number" style="padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" placeholder="MM/YY" style="padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        <input type="text" placeholder="CVV" style="padding: 6px; width: 65px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    </div>
+                    <button onclick="handleGatewayPay('Card')" style="background: #3b82f6; color: white; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Secure Card Pay</button>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-top: 5px solid #10b981;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="fas fa-university" style="color: #10b981; font-size: 1.5rem;"></i>
+                    <h3 style="color: #1e293b;">Bank Transfer</h3>
+                </div>
+                <div style="background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 0.9rem; color: #475569;">
+                    <p style="margin-bottom: 5px;"><strong>Bank:</strong> Ecobank Liberia</p>
+                    <p style="margin-bottom: 5px;"><strong>Account:</strong> 1234567890</p>
+                    <p><strong>Name:</strong> Compassion Project Inc.</p>
+                </div>
+                <p style="font-size: 0.8rem; color: #64748b; margin: 15px 0;">Please upload your transfer slip below for verification.</p>
+                <input type="file" style="font-size: 0.8rem; margin-bottom: 10px;">
+                <button onclick="handleGatewayPay('Bank Transfer')" style="width:100%; background: #10b981; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Confirm Transfer</button>
+            </div>
+
         </div>
     </div>
 </section>
