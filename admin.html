@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Date Liberian</title>
+    <link rel="stylesheet" href="stylesheet/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="admin-wrapper">
+        <nav class="sidebar">
+            <div class="admin-logo">Admin <span>Panel</span></div>
+            <ul>
+                <li class="active">Dashboard</li>
+                <li>Verify Users</li>
+                <li>Payments</li>
+                <li>Reported Profiles</li>
+                <li>Logout</li>
+            </ul>
+        </nav>
+
+        <main class="main-admin">
+            <header class="admin-header">
+                <h1>Overview</h1>
+                <div class="stats-bar">
+                    <div class="stat-card">Total Users: <strong>1,240</strong></div>
+                    <div class="stat-card">Revenue: <strong>$2,480.00</strong></div>
+                </div>
+            </header>
+
+            <section class="admin-section">
+                <h2>Pending Verifications</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>ID Photo</th>
+                            <th>Selfie</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Samuel T. (Monrovia)</td>
+                            <td><button class="view-link">View ID</button></td>
+                            <td><button class="view-link">View Selfie</button></td>
+                            <td>
+                                <button class="btn approve">Approve</button>
+                                <button class="btn reject">Reject</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Princess K. (Gbarnga)</td>
+                            <td><button class="view-link">View ID</button></td>
+                            <td><button class="view-link">View Selfie</button></td>
+                            <td>
+                                <button class="btn approve">Approve</button>
+                                <button class="btn reject">Reject</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

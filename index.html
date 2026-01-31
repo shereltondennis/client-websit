@@ -3,379 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compassion Project | Non-Profit</title>
+    <title>Date Liberian | National Discovery</title>
     <link rel="stylesheet" href="stylesheet/styles.css">
-    <script src="script.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <nav class="navbar">
-            <div class="logo">Compassion<span>Project</span></div>
-            <ul class="nav-links">
-                <li><a href="#about">come to me</a></li>
-                <li><a href="#programs">Programs</a></li>
-                <li><a href="#involved">Get Involved</a></li>
-                <li><a href="#events">Events</a></li>
-            </ul>
-            <a href="#payment-portal" class="cta-btn">Donate Now</a>
-        </nav>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">Date <span>Liberian</span></a>
+            </div>
+
+            <div class="header-search">
+                <input type="text" id="citySearch" placeholder="Search City (e.g. Monrovia)..." onkeyup="filterByCity()">
+                <select id="genderFilter" onchange="filterByCity()">
+                    <option value="all">All</option>
+                    <option value="female">Women</option>
+                    <option value="male">Men</option>
+                </select>
+            </div>
+
+            <div class="header-actions">
+                <button class="login-btn" onclick="openLoginModal()">Login</button>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </div>
+        
+        <div id="mobileMenu" class="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="register.html">Create Profile</a>
+            <a href="#" onclick="openLoginModal()">Login</a>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Empowering Communities for a Brighter Tomorrow</h1>
-            <p>Our mission is to provide sustainable resources and education to underserved regions globally.</p>
-            <div class="hero-btns">
-                <a href="#programs" class="btn-secondary">Our Work</a>
-                <a href="#volunteer-area" class="btn-primary">Become a Volunteer</a>
-            </div>
-        </div>
-    </section>
-<section id="programs" class="programs-section">
-    <div class="container">
-        <div class="section-header">
-            <h2>Our Programs</h2>
-            <p>Transforming lives through targeted initiatives and sustainable solutions.</p>
-        </div>
+    <main class="container">
+        <section class="hero">
+            <h1>Find Your Partner Nationwide</h1>
+            <p>Verified profiles from every county in Liberia.</p>
+        </section>
 
-        <div class="programs-container">
-            <div class="program-item">
-                <div class="program-image">
-                    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=500&q=80" alt="Education Program">
-                </div>
-                <div class="program-text">
-                    <span class="category">Education</span>
-                    <h3>Global Literacy Initiative</h3>
-                    <p>Building schools and providing learning materials to children in remote rural areas.</p>
-                    <ul class="program-stats">
-                        <li><strong>150</strong> Schools Built</li>
-                        <li><strong>5k+</strong> Students Enrolled</li>
-                    </ul>
-                    <a href="#" class="learn-more">Learn More &rarr;</a>
-                </div>
-            </div>
-
-            <div class="program-item">
-                <div class="program-image">
-                    <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=500&q=80" alt="Water Program">
-                </div>
-                <div class="program-text">
-                    <span class="category">Environment</span>
-                    <h3>Clean Water Project</h3>
-                    <p>Installing solar-powered filtration systems to provide safe drinking water to villages.</p>
-                    <ul class="program-stats">
-                        <li><strong>300</strong> Systems Installed</li>
-                        <li><strong>20k</strong> People Served</li>
-                    </ul>
-                    <a href="#" class="learn-more">Learn More &rarr;</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-    <section class="impact" id="about">
-        <h2>Our Impact at a Glance</h2>
-        <div class="metrics-container">
-            <div class="metric-card">
-                <h3>10k+</h3>
-                <p>Lives Impacted</p>
-            </div>
-            <div class="metric-card">
-                <h3>50+</h3>
-                <p>Active Programs</p>
-            </div>
-            <div class="metric-card">
-                <h3>15</h3>
-                <p>Countries Reached</p>
-            </div>
-        </div>
-    </section>
-<!-- below is the donate now button -->
-   <section id="payment-portal" style="padding: 60px 5%; background: #f8fafc;">
-    <div style="max-width: 1000px; margin: 0 auto;">
-        
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h2 style="color: #1e293b; font-size: 2rem;">Secure Payment Gateway</h2>
-            <p style="color: #64748b;">Select your preferred method to complete your donation</p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+        <section class="profile-grid" id="profileGrid">
             
-            <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-top: 5px solid #f39c12;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                    <i class="fas fa-mobile-alt" style="color: #f39c12; font-size: 1.5rem;"></i>
-                    <h3 style="color: #1e293b;">Mobile Money</h3>
+            <div class="short-card" data-gender="female">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=400" alt="Headshot">
+                    <span class="badge verified">Verified</span>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
-                        <input type="radio" name="gateway-momo" value="Orange" checked> 
-                        <span style="font-weight: 600;">Orange Money</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
-                        <input type="radio" name="gateway-momo" value="Lonestar"> 
-                        <span style="font-weight: 600;">Lonestar MTN</span>
-                    </label>
-                    <input type="tel" placeholder="Number (e.g. 077...)" style="padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
-                    <button onclick="handleGatewayPay('MoMo')" style="background: #f39c12; color: white; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Pay with MoMo</button>
+                <div class="card-content">
+                    <h3>Bendu, 24</h3>
+                    <p class="tag">Nurse • Monrovia</p>
+                    <button class="open-btn" onclick="toggleModal()">View Full Profile</button>
                 </div>
             </div>
 
-            <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-top: 5px solid #3b82f6;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                    <i class="fas fa-credit-card" style="color: #3b82f6; font-size: 1.5rem;"></i>
-                    <h3 style="color: #1e293b;">ATM / Card</h3>
+            <div class="short-card" data-gender="male">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400" alt="Headshot">
+                    <span class="badge verified">Verified</span>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <input type="text" placeholder="Card Number" style="padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="text" placeholder="MM/YY" style="padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
-                        <input type="text" placeholder="CVV" style="padding: 6px; width: 65px; border: 1px solid #e2e8f0; border-radius: 8px;">
-                    </div>
-                    <button onclick="handleGatewayPay('Card')" style="background: #3b82f6; color: white; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Secure Card Pay</button>
+                <div class="card-content">
+                    <h3>Darius, 30</h3>
+                    <p class="tag">Engineer • Gbarnga</p>
+                    <button class="open-btn" onclick="toggleModal()">View Full Profile</button>
                 </div>
             </div>
 
-            <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-top: 5px solid #10b981;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                    <i class="fas fa-university" style="color: #10b981; font-size: 1.5rem;"></i>
-                    <h3 style="color: #1e293b;">Bank Transfer</h3>
+            <div class="short-card" data-gender="female">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?auto=format&fit=crop&w=400" alt="Headshot">
                 </div>
-                <div style="background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 0.9rem; color: #475569;">
-                    <p style="margin-bottom: 5px;"><strong>Bank:</strong> Ecobank Liberia</p>
-                    <p style="margin-bottom: 5px;"><strong>Account:</strong> 1234567890</p>
-                    <p><strong>Name:</strong> Compassion Project Inc.</p>
-                </div>
-                <p style="font-size: 0.8rem; color: #64748b; margin: 15px 0;">Please upload your transfer slip below for verification.</p>
-                <input type="file" style="font-size: 0.8rem; margin-bottom: 10px;">
-                <button onclick="handleGatewayPay('Bank Transfer')" style="width:100%; background: #10b981; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Confirm Transfer</button>
-            </div>
-
-        </div>
-    </div>
-</section>
- <!-- here is the even section -->
-<section id="events" class="events-section">
-    <div class="container">
-        <h2>Upcoming Events</h2>
-        <p class="section-subtitle">Join us in person or online to make an impact.</p>
-
-        <div class="events-grid">
-            <div class="event-card">
-                <div class="event-date">
-                    <span class="day">15</span>
-                    <span class="month">MAR</span>
-                </div>
-                <div class="event-info">
-                    <h3>Annual Charity Gala</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Grand Hall, Downtown</p>
-                    <p>An evening of dinner, auctions, and storytelling.</p>
-                    <a href="#" class="register-btn">Register Now</a>
+                <div class="card-content">
+                    <h3>Musu, 28</h3>
+                    <p class="tag">Business • Buchanan</p>
+                    <button class="open-btn" onclick="toggleModal()">View Full Profile</button>
                 </div>
             </div>
 
-            <div class="event-card">
-                <div class="event-date">
-                    <span class="day">22</span>
-                    <span class="month">MAR</span>
-                </div>
-                <div class="event-info">
-                    <h3>Community Clean-up</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Riverside Park</p>
-                    <p>Help us restore our local waterways and parks.</p>
-                    <a href="#" class="register-btn">Sign Up</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="archive-link">
-            <a href="#">View Past Events & Reports</a>
-        </div>
-    </div>
-</section>
-  <!-- the get involved section -->
-<section id="involved" class="involved-section">
-    <div class="container">
-        <h2>Get Involved</h2>
-        <p class="section-subtitle">There are many ways to support our mission. Choose the path that fits you best.</p>
+        </section>
+    </main>
 
-        <div class="involved-grid">
-            <div class="involved-card">
-                <i class="fas fa-hands-helping card-icon"></i>
-                <h3>Volunteer</h3>
-                <p>Join our team on the ground. From teaching to logistics, your skills can change lives.</p>
-                <a href="#volunteer-area" class="secondary-btn">View Opportunities</a>
-            </div>
-
-            <div class="involved-card">
-                <i class="fas fa-users card-icon"></i>
-                <h3>Membership</h3>
-                <p>Become a recurring member of our community and get exclusive updates and event invites.</p>
-                <a href="#community" class="secondary-btn">Join the Community</a>
-            </div>
-
-            <div class="involved-card">
-                <i class="fas fa-bullhorn card-icon"></i>
-                <h3>Fundraise</h3>
-                <p>Start your own campaign! Run a marathon or host a bake sale to raise funds for our cause.</p>
-                <a href="#start-campaign" class="secondary-btn">Start a Campaign</a>
-            </div>
-        </div>
-    </div>
-</section>
-<header id="top">
-    <nav class="navbar"> ... </nav>
-</header>
-
-<!-- Volunteer section -->
- <section id="volunteer-area" style="padding: 80px 5%; background: #f4f7f6;">
-    <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
-        <h2 style="color: #2c3e50; font-size: 2.2rem; margin-bottom: 10px;">Volunteer With Us</h2>
-        <p style="color: #666; margin-bottom: 50px;">Use your skills to empower others. We have roles for everyone.</p>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 50px;">
-            
-            <div style="background: #fff; padding: 30px; border-radius: 12px; border-bottom: 4px solid #27ae60; text-align: left;">
-                <i class="fas fa-graduation-cap" style="color: #27ae60; font-size: 1.5rem; margin-bottom: 15px;"></i>
-                <h4 style="margin-bottom: 10px;">Education Support</h4>
-                <p style="font-size: 0.9rem; color: #777;">Help tutor students or assist in rural classroom construction projects.</p>
-            </div>
-
-            <div style="background: #fff; padding: 30px; border-radius: 12px; border-bottom: 4px solid #f39c12; text-align: left;">
-                <i class="fas fa-laptop-code" style="color: #f39c12; font-size: 1.5rem; margin-bottom: 15px;"></i>
-                <h4 style="margin-bottom: 10px;">Tech & Admin</h4>
-                <p style="font-size: 0.9rem; color: #777;">Assist with website updates, data entry, or social media management from anywhere.</p>
-            </div>
-
-            <div style="background: #fff; padding: 30px; border-radius: 12px; border-bottom: 4px solid #2980b9; text-align: left;">
-                <i class="fas fa-hand-holding-heart" style="color: #2980b9; font-size: 1.5rem; margin-bottom: 15px;"></i>
-                <h4 style="margin-bottom: 10px;">Field Logistics</h4>
-                <p style="font-size: 0.9rem; color: #777;">Work on the ground to distribute supplies and organize community workshops.</p>
-            </div>
-        </div>
-
-        <div style="max-width: 600px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-            <h3 style="margin-bottom: 25px;">Volunteer Application</h3>
-            <form id="volunteer-form-action">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                    <input type="text" placeholder="First Name" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                    <input type="text" placeholder="Last Name" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                </div>
-                <input type="email" placeholder="Email Address" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;">
-                <select required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; color: #666;">
-                    <option value="">Preferred Role</option>
-                    <option>Education</option>
-                    <option>Tech/Digital</option>
-                    <option>Field Work</option>
-                </select>
-                <textarea placeholder="Tell us why you want to join..." rows="3" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px;"></textarea>
-                <button type="submit" style="width: 100%; padding: 15px; background: #27ae60; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Send My Application</button>
+    <div id="loginModal" class="modal">
+        <div class="modal-content login-box">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Welcome Back</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email Address" required>
+                <input type="password" id="loginPass" placeholder="Password" required>
+                <button type="submit" class="pay-btn">Login</button>
             </form>
         </div>
     </div>
-</section>
-   <!-- fundraiser campaign section -->
-    <section id="start-campaign" style="padding: 80px 5%; background: #fff;">
-    <div style="max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-        
-        <div>
-            <h2 style="color: #2c3e50; font-size: 2.5rem; margin-bottom: 20px;">Empower Your Community</h2>
-            <p style="color: #666; line-height: 1.8; margin-bottom: 20px;">
-                Do you have a project that needs funding? We help local leaders launch campaigns for education, clean water, and healthcare.
-            </p>
-            <ul style="list-style: none; color: #555;">
-                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Get a dedicated fundraising page</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Reach global donors</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #27ae60;"></i> 0% platform fees for verified causes</li>
-            </ul>
+
+    <script src="script.js"></script>
+
+    <footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <div class="logo">Date <span>Liberian</span></div>
+            <p>Connecting serious Liberians nationwide. Your safety is our priority.</p>
         </div>
 
-        <div style="background: #f4f7f6; padding: 30px; border-radius: 15px; border: 1px solid #e0e0e0;">
-            <h4 style="margin-bottom: 20px; text-align: center;">Campaign Application</h4>
-            <form id="campaign-form">
-                <input type="text" placeholder="Campaign Title" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;">
-                <select style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;">
-                    <option>Select Category</option>
-                    <option>Education</option>
-                    <option>Health</option>
-                    <option>Environment</option>
-                </select>
-                <input type="number" placeholder="Goal Amount ($)" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;">
-                <textarea placeholder="Briefly describe your cause..." rows="4" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;"></textarea>
-                <button type="submit" style="width: 100%; padding: 15px; background: #2c3e50; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Submit Proposal</button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<!-- the join the community section -->
- <section id="community" style="padding: 80px 5%; background: #2c3e50; color: #fff;">
-    <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;">
-        
-        <div>
-            <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: #fff;">Join the Community</h2>
-            <p style="font-size: 1.1rem; line-height: 1.8; color: #bdc3c7; margin-bottom: 30px;">
-                Be the first to hear about our impact stories, upcoming events, and urgent needs. Join 5,000+ members making a difference in Liberia.
-            </p>
-            <div style="display: flex; gap: 15px;">
-                <a href="#" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
-                <a href="#" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
-                <a href="#" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                <a href="#" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></a>
-            </div>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
-            <form id="community-form">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Full Name</label>
-                    <input type="text" placeholder="Enter your name" required style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: #fff; outline: none;">
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Email Address</label>
-                    <input type="email" placeholder="Enter your email" required style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: #fff; outline: none;">
-                </div>
-                <button type="submit" style="width: 100%; padding: 15px; background: #27ae60; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;">
-                    Become a Member
-                </button>
-            </form>
-            <p style="font-size: 0.8rem; text-align: center; margin-top: 15px; color: #95a5a6;">
-                We respect your privacy. Unsubscribe at any time.
-            </p>
-        </div>
-
-    </div>
-</section>
-<footer class="main-footer">
-    <div class="footer-grid">
-        <div class="footer-brand">
-            <div class="logo">Compassion<span>Project</span></div>
-            <p>Empowering communities through sustainable action and global partnership since 2010.</p>
-        </div>
-
-        <div class="footer-links">
-            <h4>Quick Links</h4>
+        <div class="footer-section">
+            <h4>Platform</h4>
             <ul>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#programs">Programs</a></li>
-                <li><a href="#involved">Get Involved</a></li>
-                <li><a href="#donate">Donate</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="register.html">Join Now</a></li>
+                <li><a href="#">Success Stories</a></li>
             </ul>
         </div>
 
-        <div class="footer-contact">
-            <h4>Contact</h4>
-            <p>123 Charity Lane, Suite 100</p>
-            <p>Email: hello@compassionproject.org</p>
-            <p>Phone: +1 (555) 000-0000</p>
+        <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Safety Tips</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Contact Support</a></li>
+            </ul>
         </div>
     </div>
-
+    
     <div class="footer-bottom">
-        <p>&copy; 2026 Compassion Project. All rights reserved.</p>
-        <a href="#top" class="back-to-top">Back to Top <i class="fas fa-arrow-up"></i></a>
+        <p>&copy; 2026 Date Liberian. All Rights Reserved. Monrovia, Liberia.</p>
     </div>
 </footer>
-
 </body>
 </html>

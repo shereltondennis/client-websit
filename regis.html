@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Date Liberian | Step-by-Step</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="stylesheet/regis.css">
+</head>
+<body>
+
+    <div class="reg-container">
+        <div class="form-header">
+            <h2>Create Your Profile</h2>
+            <p>Join the national network for serious dating.</p>
+        </div>
+
+        <form id="regForm">
+            <div class="tab">
+                <h3>Step 1: The Basics</h3>
+                <input type="text" placeholder="Full Name" name="fullname">
+                <input type="number" placeholder="Your Age" name="age">
+                <select name="gender">
+                    <option value="">Select Your Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                <input type="email" placeholder="Email Address" name="email">
+            </div>
+
+            <div class="tab" style="display:none;">
+                <h3>Step 2: About You</h3>
+                <input type="text" placeholder="Occupation (e.g. Businessman, Teacher)" name="job">
+                <select name="education">
+                    <option value="">Education Level</option>
+                    <option value="highschool">High School</option>
+                    <option value="university">University/College</option>
+                    <option value="masters">Masters+</option>
+                </select>
+                <input type="number" placeholder="Number of Children" name="children">
+                <select name="marital">
+                    <option value="">Marital Status</option>
+                    <option value="single">Single</option>
+                    <option value="divorced">Divorced</option>
+                    <option value="widowed">Widowed</option>
+                </select>
+            </div>
+
+            <div class="tab" style="display:none;">
+                <h3>Step 3: Verification & Location</h3>
+                <label>Short Card Photo (Headshot)</label>
+                <input type="file" accept="image/*">
+                
+                <label>Full Body Photo</label>
+                <input type="file" accept="image/*">
+
+                <hr>
+                <p class="private-note">The following is hidden until a user pays:</p>
+                <input type="text" placeholder="Community (e.g. Old Road)" name="community">
+                <textarea placeholder="Exact House Address / Directions" name="address"></textarea>
+                <input type="tel" placeholder="WhatsApp Number (+231...)" name="phone">
+            </div>
+
+            <div class="form-footer">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next Step</button>
+            </div>
+
+            <div class="steps-indicator">
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+            </div>
+        </form>
+    </div>
+
+    <script src="regis.js"></script>
+</body>
+</html>
