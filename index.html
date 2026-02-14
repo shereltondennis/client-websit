@@ -3,130 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date Liberian | National Discovery</title>
+    <title>Liberia Date | Find Real Connections</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheet/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <header class="main-header">
-        <div class="header-container">
-            <div class="logo">
-                <a href="index.html">Date <span>Liberian</span></a>
-            </div>
-
-            <div class="header-search">
-                <input type="text" id="citySearch" placeholder="Search City (e.g. Monrovia)..." onkeyup="filterByCity()">
-                <select id="genderFilter" onchange="filterByCity()">
-                    <option value="all">All</option>
-                    <option value="female">Women</option>
-                    <option value="male">Men</option>
-                </select>
-            </div>
-
-            <div class="header-actions">
-                <button class="login-btn" onclick="openLoginModal()">Login</button>
-                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
-            </div>
-        </div>
-        
-        <div id="mobileMenu" class="mobile-nav">
-            <a href="index.html">Home</a>
-            <a href="regis.html">Create Profile</a>
-            <a href="#" onclick="openLoginModal()">Login</a>
-            <a href="admin.html">Admin Dashboard</a>
+    <header class="site-header">
+        <div class="wrapper nav-row">
+            <a href="index.html" class="brand">Liberia <span>Date</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="regis.html">Create Profile</a>
+                <a href="admin.html">Admin</a>
+            </nav>
         </div>
     </header>
 
-    <main class="container">
+    <main>
         <section class="hero">
-            <h1>Find Your Partner Nationwide</h1>
-            <p>Verified profiles from every county in Liberia.</p>
+            <div class="wrapper hero-grid">
+                <div>
+                    <p class="kicker">Built for Liberia</p>
+                    <h1>Meet Serious Singles Across Liberia</h1>
+                    <p class="lead">Search verified profiles from Monrovia, Buchanan, Gbarnga, Kakata, and more. Simple, local, and focused on meaningful relationships.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="regis.html">Join Liberia Date</a>
+                        <a class="btn btn-ghost" href="#discover">Discover Profiles</a>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <h2>Why People Join</h2>
+                    <ul>
+                        <li>Local profile discovery by county</li>
+                        <li>Admin review before public listing</li>
+                        <li>Clear profile details and match intent</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-        <section class="profile-grid" id="profileGrid">
-            
-            <div class="short-card" data-gender="female">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=400" alt="Headshot">
-                    <span class="badge verified">Verified</span>
+        <section class="discover" id="discover">
+            <div class="wrapper">
+                <div class="section-head">
+                    <h2>Discover Profiles</h2>
+                    <p>Filter by city or who they want to meet.</p>
                 </div>
-                <div class="card-content">
-                    <h3>Bendu, 24</h3>
-                    <p class="tag">Nurse • Monrovia</p>
-                    <button class="open-btn" onclick="toggleModal()">View Full Profile</button>
-                </div>
-            </div>
+                <p id="globalNotice" class="notice is-hidden"></p>
 
-            <div class="short-card" data-gender="male">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400" alt="Headshot">
-                    <span class="badge verified">Verified</span>
+                <div class="filters">
+                    <input type="text" id="citySearch" placeholder="Search by city or county (e.g. Monrovia)">
+                    <select id="lookingForFilter">
+                        <option value="all">All preferences</option>
+                        <option value="men">Looking for men</option>
+                        <option value="women">Looking for women</option>
+                    </select>
                 </div>
-                <div class="card-content">
-                    <h3>Darius, 30</h3>
-                    <p class="tag">Engineer • Gbarnga</p>
-                    <button class="open-btn" onclick="toggleModal()">View Full Profile</button>
-                </div>
-            </div>
 
-            <div class="short-card" data-gender="female">
-                <div class="card-image">
-                    <img src="https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?auto=format&fit=crop&w=400" alt="Headshot">
-                </div>
-                <div class="card-content">
-                    <h3>Musu, 28</h3>
-                    <p class="tag">Business • Buchanan</p>
-                    <button class="open-btn" onclick="toggleModal()">View Full Profile</button>
-                </div>
+                <div class="profile-grid" id="profileGrid"></div>
             </div>
+        </section>
 
+        <section class="safety">
+            <div class="wrapper safety-box">
+                <h3>Safety First</h3>
+                <p>Meet in public places, verify identity on a call first, and report suspicious behavior to admins immediately.</p>
+            </div>
         </section>
     </main>
 
-    <div id="loginModal" class="modal">
-        <div class="modal-content login-box">
-            <span class="close" onclick="closeLoginModal()">&times;</span>
-            <h2>Welcome Back</h2>
-            <form id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Email Address" required>
-                <input type="password" id="loginPass" placeholder="Password" required>
-                <button type="submit" class="pay-btn">Login</button>
-            </form>
+    <div class="modal" id="profileModal" aria-hidden="true">
+        <div class="modal-panel">
+            <button class="modal-close" id="closeModalBtn" aria-label="Close profile">x</button>
+            <img id="modalPhoto" class="modal-main-photo" src="" alt="Profile photo">
+            <h3 id="modalName"></h3>
+            <p id="modalMeta" class="modal-meta"></p>
+            <p id="modalBio"></p>
+            <div class="full-body-gallery" id="fullBodyGallery">
+                <img id="modalFullBody1" src="" alt="Full body photo 1">
+                <img id="modalFullBody2" src="" alt="Full body photo 2">
+            </div>
+            <div class="intro-video-wrap" id="introVideoWrap">
+                <h4>Intro Video</h4>
+                <video id="modalIntroVideo" controls preload="metadata"></video>
+            </div>
+            <div id="contactLockBox" class="contact-lock">
+                <p id="contactStatus" class="modal-phone">Contact details are locked.</p>
+                <button class="btn btn-primary" id="unlockContactBtn" type="button">Pay USD 3.00 to Unlock Contact</button>
+                <p class="payment-note">Secure checkout powered by Stripe.</p>
+            </div>
+            <p id="modalPhone" class="modal-phone is-hidden"></p>
+            <p id="modalWhatsapp" class="modal-phone is-hidden"></p>
         </div>
     </div>
+
+    <footer class="site-footer">
+        <div class="wrapper footer-grid">
+            <div class="footer-col">
+                <h4>Liberia Date</h4>
+                <p>Local dating platform focused on serious relationships across Liberia. Profiles are reviewed before public listing.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="index.html">Discover Profiles</a></li>
+                    <li><a href="regis.html">Create Profile</a></li>
+                    <li><a href="admin.html">Admin Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Safety</h4>
+                <ul>
+                    <li>Meet in a public place first</li>
+                    <li>Confirm identity by voice/video call</li>
+                    <li>Never send money to strangers</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li>Email: support@liberiadate.com</li>
+                    <li>WhatsApp: +231 88 000 0000</li>
+                    <li>Monrovia, Montserrado, Liberia</li>
+                </ul>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook">Facebook</a>
+                    <a href="#" aria-label="Instagram">Instagram</a>
+                    <a href="#" aria-label="TikTok">TikTok</a>
+                    <a href="#" aria-label="X">X</a>
+                    <a href="#" aria-label="YouTube">YouTube</a>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper footer-row">
+            <p>By using this platform, you agree to respectful conduct and profile authenticity rules.</p>
+            <p id="yearText"></p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
-
-    <footer class="main-footer">
-    <div class="footer-container">
-        <div class="footer-section">
-            <div class="logo">Date <span>Liberian</span></div>
-            <p>Connecting serious Liberians nationwide. Your safety is our priority.</p>
-        </div>
-
-        <div class="footer-section">
-            <h4>Platform</h4>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="register.html">Join Now</a></li>
-                <li><a href="#">Success Stories</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h4>Support</h4>
-            <ul>
-                <li><a href="#">Safety Tips</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Contact Support</a></li>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="footer-bottom">
-        <p>&copy; 2026 Date Liberian. All Rights Reserved. Monrovia, Liberia.</p>
-    </div>
-</footer>
 </body>
 </html>

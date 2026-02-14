@@ -3,76 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Date Liberian | Step-by-Step</title>
+    <title>Create Profile | Liberia Date</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheet/styles.css">
-    <link rel="stylesheet" href="stylesheet/regis.css">
 </head>
 <body>
-
-    <div class="reg-container">
-        <div class="form-header">
-            <h2>Create Your Profile</h2>
-            <p>Join the national network for serious dating.</p>
+    <header class="site-header">
+        <div class="wrapper nav-row">
+            <a href="index.html" class="brand">Liberia <span>Date</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="regis.html">Create Profile</a>
+                <a href="admin.html">Admin</a>
+            </nav>
         </div>
+    </header>
 
-        <form id="regForm">
-            <div class="tab">
-                <h3>Step 1: The Basics</h3>
-                <input type="text" placeholder="Full Name" name="fullname">
-                <input type="number" placeholder="Your Age" name="age">
-                <select name="gender">
-                    <option value="">Select Your Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-                <input type="email" placeholder="Email Address" name="email">
+    <main class="form-page">
+        <section class="wrapper form-shell">
+            <div class="section-head">
+                <h1>Create Your Profile</h1>
+                <p>Your profile is submitted as pending and visible after admin approval.</p>
             </div>
 
-            <div class="tab" style="display:none;">
-                <h3>Step 2: About You</h3>
-                <input type="text" placeholder="Occupation (e.g. Businessman, Teacher)" name="job">
-                <select name="education">
-                    <option value="">Education Level</option>
-                    <option value="highschool">High School</option>
-                    <option value="university">University/College</option>
-                    <option value="masters">Masters+</option>
-                </select>
-                <input type="number" placeholder="Number of Children" name="children">
-                <select name="marital">
-                    <option value="">Marital Status</option>
-                    <option value="single">Single</option>
-                    <option value="divorced">Divorced</option>
-                    <option value="widowed">Widowed</option>
-                </select>
-            </div>
+            <form id="registrationForm" class="profile-form">
+                <div class="form-row two-col">
+                    <label>
+                        Full Name
+                        <input type="text" id="fullName" required>
+                    </label>
+                    <label>
+                        Age
+                        <input type="number" id="age" min="18" max="80" required>
+                    </label>
+                </div>
 
-            <div class="tab" style="display:none;">
-                <h3>Step 3: Verification & Location</h3>
-                <label>Short Card Photo (Headshot)</label>
-                <input type="file" accept="image/*">
-                
-                <label>Full Body Photo</label>
-                <input type="file" accept="image/*">
+                <div class="form-row two-col">
+                    <label>
+                        Gender
+                        <select id="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="female">Woman</option>
+                            <option value="male">Man</option>
+                        </select>
+                    </label>
+                    <label>
+                        Looking For
+                        <select id="lookingFor" required>
+                            <option value="">Select preference</option>
+                            <option value="women">Women</option>
+                            <option value="men">Men</option>
+                        </select>
+                    </label>
+                </div>
 
-                <hr>
-                <p class="private-note">The following is hidden until a user pays:</p>
-                <input type="text" placeholder="Community (e.g. Old Road)" name="community">
-                <textarea placeholder="Exact House Address / Directions" name="address"></textarea>
-                <input type="tel" placeholder="WhatsApp Number (+231...)" name="phone">
-            </div>
+                <div class="form-row two-col">
+                    <label>
+                        City / County
+                        <input type="text" id="city" placeholder="Monrovia, Montserrado" required>
+                    </label>
+                    <label>
+                        Occupation
+                        <input type="text" id="occupation" required>
+                    </label>
+                </div>
 
-            <div class="form-footer">
-                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next Step</button>
-            </div>
+                <div class="form-row two-col">
+                    <label>
+                        Phone Number
+                        <input type="tel" id="phone" placeholder="+231 77 000 0000" required>
+                    </label>
+                    <label>
+                        WhatsApp Number
+                        <input type="tel" id="whatsapp" placeholder="+231 88 000 0000" required>
+                    </label>
+                </div>
 
-            <div class="steps-indicator">
-                <span class="step"></span>
-                <span class="step"></span>
-                <span class="step"></span>
+                <div class="form-row two-col">
+                    <label>
+                        Card Photo
+                        <input type="file" id="cardPhoto" name="cardPhoto" accept="image/*" required>
+                    </label>
+                    <label>
+                        Intro Video (Max 1 minute)
+                        <button type="button" class="btn btn-ghost" id="startRecordVideoBtn">Record Video</button>
+                        <p class="field-hint">Tap Record Video to open your device camera immediately.</p>
+                        <input type="file" id="introVideoRecord" name="introVideoRecord" accept="video/*" capture="user" class="is-hidden">
+                        <p id="recordedVideoName" class="field-hint is-hidden"></p>
+                        <div id="desktopRecorder" class="desktop-recorder is-hidden">
+                            <video id="recordPreview" autoplay muted playsinline></video>
+                            <div class="recorder-actions">
+                                <button type="button" class="btn btn-primary btn-sm" id="beginRecordBtn">Start Recording</button>
+                                <button type="button" class="btn btn-danger btn-sm is-hidden" id="stopRecordBtn">Stop Recording</button>
+                            </div>
+                            <p id="recordTimer" class="field-hint is-hidden"></p>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="form-row two-col">
+                    <label>
+                        Full Body Photo 1
+                        <input type="file" id="fullBodyPhoto1" name="fullBodyPhoto1" accept="image/*" required>
+                    </label>
+                    <label>
+                        Full Body Photo 2
+                        <input type="file" id="fullBodyPhoto2" name="fullBodyPhoto2" accept="image/*" required>
+                    </label>
+                </div>
+
+                <label>
+                    Short Bio
+                    <textarea id="bio" rows="4" placeholder="Describe your personality and what you want in a relationship." required></textarea>
+                </label>
+
+                <button class="btn btn-primary" type="submit">Submit Profile</button>
+                <p id="formNotice" class="notice"></p>
+            </form>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper footer-grid">
+            <div class="footer-col">
+                <h4>Liberia Date</h4>
+                <p>Submit complete and honest profile information. Admin review is required before any profile appears on the platform.</p>
             </div>
-        </form>
-    </div>
+            <div class="footer-col">
+                <h4>Profile Checklist</h4>
+                <ul>
+                    <li>Clear card photo</li>
+                    <li>Two full-body photos</li>
+                    <li>1-minute intro video</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li>Email: support@liberiadate.com</li>
+                    <li>WhatsApp: +231 88 000 0000</li>
+                    <li>Response time: 24-48 hours</li>
+                </ul>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook">Facebook</a>
+                    <a href="#" aria-label="Instagram">Instagram</a>
+                    <a href="#" aria-label="TikTok">TikTok</a>
+                    <a href="#" aria-label="X">X</a>
+                    <a href="#" aria-label="YouTube">YouTube</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Privacy</h4>
+                <ul>
+                    <li>Contact details remain locked until payment</li>
+                    <li>Media uploads are reviewed for safety</li>
+                    <li>Misleading profiles may be removed</li>
+                </ul>
+            </div>
+        </div>
+        <div class="wrapper footer-row">
+            <p>Profiles that violate policy can be rejected or permanently removed.</p>
+            <p id="yearText"></p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
