@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Liberia Date</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet/styles.css">
+</head>
+<body>
+    <main class="wrapper admin-page">
+        <section class="form-shell admin-login-shell">
+            <div class="section-head">
+                <h1>Admin Access</h1>
+                <p>Choose an option: login, or create admin account (one-time only).</p>
+            </div>
+            <div class="admin-auth-switch">
+                <button id="adminAuthModeLogin" type="button" class="btn btn-primary btn-sm">Login</button>
+                <button id="adminAuthModeCreate" type="button" class="btn btn-ghost btn-sm">Create Account</button>
+            </div>
+
+            <div id="adminLoginPanel" class="is-hidden">
+                <form id="adminLoginForm" class="profile-form">
+                    <label>
+                        Admin Username
+                        <input id="adminUsername" type="text" autocomplete="username" required>
+                    </label>
+                    <label>
+                        Password
+                        <input id="adminPassword" type="password" autocomplete="current-password" required>
+                    </label>
+                    <div class="admin-login-actions">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <p id="adminLoginNotice" class="notice"></p>
+                </form>
+            </div>
+
+            <div id="adminSetupPanel" class="is-hidden">
+                <form id="adminSetupForm" class="profile-form">
+                    <label>
+                        Admin Username
+                        <input id="adminSetupUsername" type="text" autocomplete="username" required>
+                    </label>
+                    <label>
+                        Password
+                        <input id="adminSetupPassword" type="password" autocomplete="new-password" minlength="8" required>
+                    </label>
+                    <label>
+                        Confirm Password
+                        <input id="adminSetupConfirmPassword" type="password" autocomplete="new-password" minlength="8" required>
+                    </label>
+                    <div class="admin-login-actions">
+                        <button type="submit" class="btn btn-primary">Create Admin Login</button>
+                    </div>
+                    <p id="adminSetupNotice" class="notice"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

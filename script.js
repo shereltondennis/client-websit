@@ -1,79 +1,17 @@
 const STORAGE_KEYS = {
-    pending: "liberiaDatePendingProfiles",
-    approved: "liberiaDateApprovedProfiles",
-    unlockedContacts: "liberiaDateUnlockedContacts",
-    reports: "liberiaDateSafetyReports"
+    unlockedContacts: "liberiaDateUnlockedContacts"
 };
 
 const FALLBACK_PHOTO = "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80";
 const CONTACT_UNLOCK_PRICE_USD = 3;
 let currentModalProfileId = null;
+let approvedProfilesCache = [];
 let recorderStream = null;
 let mediaRecorder = null;
 let recorderChunks = [];
 let recorderTimerInterval = null;
 let recorderStartedAt = 0;
 let recordedIntroVideoFile = null;
-
-const seedProfiles = [
-    {
-        id: "seed-1",
-        name: "Miatta Cooper",
-        age: 26,
-        gender: "female",
-        lookingFor: "men",
-        city: "Monrovia",
-        occupation: "Nurse",
-        bio: "Faith-driven and family-oriented. I enjoy gospel music, beach walks, and meaningful conversations.",
-        phone: "+231 77 321 1001",
-        whatsapp: "+231 88 321 1001",
-        hasChildren: "no",
-        childrenDetails: "",
-        cardPhoto: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=600&q=80",
-        fullBodyPhoto1: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
-        fullBodyPhoto2: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
-        introVideo: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-        status: "approved"
-    },
-    {
-        id: "seed-2",
-        name: "Emmanuel Kpadeh",
-        age: 31,
-        gender: "male",
-        lookingFor: "women",
-        city: "Gbarnga",
-        occupation: "Civil Engineer",
-        bio: "Calm, ambitious, and ready to build a committed relationship with someone kind and honest.",
-        phone: "+231 88 212 9921",
-        whatsapp: "+231 77 212 9921",
-        hasChildren: "yes",
-        childrenDetails: "1 child (age 6)",
-        cardPhoto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
-        fullBodyPhoto1: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
-        fullBodyPhoto2: "https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=800&q=80",
-        introVideo: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-        status: "approved"
-    },
-    {
-        id: "seed-3",
-        name: "Musu Garley",
-        age: 29,
-        gender: "female",
-        lookingFor: "men",
-        city: "Buchanan",
-        occupation: "Business Owner",
-        bio: "I value loyalty and growth. I run a small fashion shop and love traveling around Liberia.",
-        phone: "+231 77 610 4420",
-        whatsapp: "+231 88 610 4420",
-        hasChildren: "yes",
-        childrenDetails: "2 children (ages 5 and 8)",
-        cardPhoto: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-        fullBodyPhoto1: "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=800&q=80",
-        fullBodyPhoto2: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80",
-        introVideo: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
-        status: "approved"
-    }
-];
 
 function getCardPhoto(profile) {
     return profile.cardPhoto || profile.photo || FALLBACK_PHOTO;
@@ -100,7 +38,7 @@ function getChildrenSummary(profile) {
     return profile.childrenDetails ? `Has children: ${profile.childrenDetails}` : "Has children";
 }
 
-function getProfiles(key) {
+function getLocalArray(key) {
     try {
         const saved = JSON.parse(localStorage.getItem(key));
         return Array.isArray(saved) ? saved : [];
@@ -109,8 +47,32 @@ function getProfiles(key) {
     }
 }
 
-function setProfiles(key, profiles) {
+function setLocalArray(key, profiles) {
     localStorage.setItem(key, JSON.stringify(profiles));
+}
+
+async function apiRequest(url, options = {}) {
+    let response;
+    try {
+        response = await fetch(url, options);
+    } catch (error) {
+        throw new Error("Cannot reach server. Start it with `npm start`, then open http://localhost:3000.");
+    }
+    const result = await response.json().catch(() => ({}));
+    if (response.status === 401 && String(url).startsWith("/api/admin")) {
+        window.location.href = "admin-login.html";
+        throw new Error("Admin session expired.");
+    }
+    if (!response.ok) {
+        throw new Error(result.error || "Request failed.");
+    }
+    return result;
+}
+
+async function fetchApprovedProfiles() {
+    const result = await apiRequest("/api/profiles?status=approved");
+    approvedProfilesCache = Array.isArray(result.profiles) ? result.profiles : [];
+    return approvedProfilesCache;
 }
 
 function getVideoDuration(file) {
@@ -346,15 +308,15 @@ function setupIntroVideoRecorder(form) {
 }
 
 function hasUnlockedContact(profileId) {
-    const unlocked = getProfiles(STORAGE_KEYS.unlockedContacts);
+    const unlocked = getLocalArray(STORAGE_KEYS.unlockedContacts);
     return unlocked.includes(profileId);
 }
 
 function unlockContact(profileId) {
-    const unlocked = getProfiles(STORAGE_KEYS.unlockedContacts);
+    const unlocked = getLocalArray(STORAGE_KEYS.unlockedContacts);
     if (!unlocked.includes(profileId)) {
         unlocked.push(profileId);
-        setProfiles(STORAGE_KEYS.unlockedContacts, unlocked);
+        setLocalArray(STORAGE_KEYS.unlockedContacts, unlocked);
     }
 }
 
@@ -376,7 +338,7 @@ function setupReportForm() {
         profileInput.value = profileIdFromUrl;
     }
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
         const notice = document.getElementById("reportNotice");
 
@@ -391,13 +353,20 @@ function setupReportForm() {
             status: "open"
         };
 
-        const reports = getProfiles(STORAGE_KEYS.reports);
-        reports.unshift(report);
-        setProfiles(STORAGE_KEYS.reports, reports);
-
-        form.reset();
-        if (notice) {
-            notice.textContent = "Report submitted. Thank you for helping keep the platform safe.";
+        try {
+            await apiRequest("/api/reports", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(report)
+            });
+            form.reset();
+            if (notice) {
+                notice.textContent = "Report submitted. Thank you for helping keep the platform safe.";
+            }
+        } catch (error) {
+            if (notice) {
+                notice.textContent = error.message || "Unable to submit report right now.";
+            }
         }
     });
 }
@@ -459,13 +428,6 @@ async function processStripeReturn() {
     }
 }
 
-function initializeSeedData() {
-    const approved = getProfiles(STORAGE_KEYS.approved);
-    if (approved.length === 0) {
-        setProfiles(STORAGE_KEYS.approved, seedProfiles);
-    }
-}
-
 function profileCardTemplate(profile) {
     return `
         <article class="profile-card">
@@ -483,12 +445,18 @@ function profileCardTemplate(profile) {
     `;
 }
 
-function renderHomeProfiles() {
+async function renderHomeProfiles() {
     const grid = document.getElementById("profileGrid");
     if (!grid) return;
 
-    const approved = getProfiles(STORAGE_KEYS.approved);
-    grid.innerHTML = approved.map(profileCardTemplate).join("");
+    try {
+        const approved = await fetchApprovedProfiles();
+        grid.innerHTML = approved.map(profileCardTemplate).join("");
+    } catch (error) {
+        grid.innerHTML = "";
+        showGlobalNotice(error.message || "Unable to load profiles right now.", true);
+        return;
+    }
 
     grid.querySelectorAll("[data-view-id]").forEach((button) => {
         button.addEventListener("click", () => openProfileModal(button.dataset.viewId));
@@ -502,8 +470,7 @@ function applyHomeFilters() {
     const cityValue = (document.getElementById("citySearch")?.value || "").trim().toLowerCase();
     const lookingForValue = document.getElementById("lookingForFilter")?.value || "all";
 
-    const approved = getProfiles(STORAGE_KEYS.approved);
-    const filtered = approved.filter((profile) => {
+    const filtered = approvedProfilesCache.filter((profile) => {
         const cityMatch = profile.city.toLowerCase().includes(cityValue);
         const lookingForMatch = lookingForValue === "all" || profile.lookingFor === lookingForValue;
         return cityMatch && lookingForMatch;
@@ -519,8 +486,7 @@ function openProfileModal(profileId) {
     const modal = document.getElementById("profileModal");
     if (!modal) return;
 
-    const approved = getProfiles(STORAGE_KEYS.approved);
-    const profile = approved.find((entry) => entry.id === profileId);
+    const profile = approvedProfilesCache.find((entry) => entry.id === profileId);
     if (!profile) return;
 
     const [fullBody1, fullBody2] = getFullBodyPhotos(profile);
@@ -592,8 +558,7 @@ function renderContactAccess(profile) {
 async function handleUnlockPayment() {
     if (!currentModalProfileId) return;
 
-    const approved = getProfiles(STORAGE_KEYS.approved);
-    const profile = approved.find((entry) => entry.id === currentModalProfileId);
+    const profile = approvedProfilesCache.find((entry) => entry.id === currentModalProfileId);
     if (!profile) return;
 
     const unlockButton = document.getElementById("unlockContactBtn");
@@ -697,9 +662,11 @@ function setupRegistrationForm() {
                 status: "pending"
             };
 
-            const pending = getProfiles(STORAGE_KEYS.pending);
-            pending.push(newProfile);
-            setProfiles(STORAGE_KEYS.pending, pending);
+            await apiRequest("/api/profiles", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newProfile)
+            });
 
             form.reset();
             if (notice) {
@@ -715,17 +682,26 @@ function setupRegistrationForm() {
     });
 }
 
-function renderAdminTable() {
+async function renderAdminTable() {
     const tableBody = document.getElementById("adminUserTable");
     if (!tableBody) return;
 
-    const pending = getProfiles(STORAGE_KEYS.pending);
-    const approved = getProfiles(STORAGE_KEYS.approved);
+    let payload;
+    try {
+        payload = await apiRequest("/api/admin/profiles");
+    } catch (error) {
+        tableBody.innerHTML = "";
+        const empty = document.getElementById("emptyPending");
+        if (empty) empty.textContent = error.message || "Unable to load pending profiles.";
+        return;
+    }
+    const pending = Array.isArray(payload.pending) ? payload.pending : [];
+    const approvedCountValue = Number(payload.approvedCount || 0);
 
     const pendingCount = document.getElementById("pendingCount");
     const approvedCount = document.getElementById("approvedCount");
     if (pendingCount) pendingCount.textContent = String(pending.length);
-    if (approvedCount) approvedCount.textContent = String(approved.length);
+    if (approvedCount) approvedCount.textContent = String(approvedCountValue);
 
     const empty = document.getElementById("emptyPending");
     if (pending.length === 0) {
@@ -754,19 +730,204 @@ function renderAdminTable() {
     `).join("");
 
     tableBody.querySelectorAll("[data-approve-id]").forEach((button) => {
-        button.addEventListener("click", () => approvePendingProfile(button.dataset.approveId));
+        button.addEventListener("click", async () => approvePendingProfile(button.dataset.approveId));
     });
 
     tableBody.querySelectorAll("[data-delete-id]").forEach((button) => {
-        button.addEventListener("click", () => deletePendingProfile(button.dataset.deleteId));
+        button.addEventListener("click", async () => deletePendingProfile(button.dataset.deleteId));
     });
 }
 
-function renderAdminReports() {
+async function setupAdminLoginForm() {
+    const loginForm = document.getElementById("adminLoginForm");
+    if (!loginForm) return;
+
+    const usernameInput = document.getElementById("adminUsername");
+    const passwordInput = document.getElementById("adminPassword");
+    const notice = document.getElementById("adminLoginNotice");
+
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const username = usernameInput?.value.trim() || "";
+        const password = passwordInput?.value || "";
+        const submitButton = loginForm.querySelector("button[type='submit']");
+        if (submitButton) submitButton.disabled = true;
+        if (notice) {
+            notice.textContent = "Signing in...";
+            notice.classList.remove("notice-error");
+        }
+
+        try {
+            await apiRequest("/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (notice) {
+                notice.textContent = "Login successful. Redirecting...";
+                notice.classList.remove("notice-error");
+            }
+            loginForm.reset();
+            window.location.href = "admin.html";
+        } catch (error) {
+            if (notice) {
+                notice.textContent = error.message || "Unable to login right now.";
+                notice.classList.add("notice-error");
+            }
+        } finally {
+            if (submitButton) submitButton.disabled = false;
+        }
+    });
+}
+
+function setAdminAuthMode(mode) {
+    const loginPanel = document.getElementById("adminLoginPanel");
+    const setupPanel = document.getElementById("adminSetupPanel");
+    const loginToggle = document.getElementById("adminAuthModeLogin");
+    const setupToggle = document.getElementById("adminAuthModeCreate");
+    if (!loginPanel || !setupPanel || !loginToggle || !setupToggle) return;
+
+    const loginActive = mode === "login";
+    const createActive = mode === "create";
+    loginPanel.classList.toggle("is-hidden", !loginActive);
+    setupPanel.classList.toggle("is-hidden", !createActive);
+
+    loginToggle.classList.toggle("btn-primary", loginActive);
+    loginToggle.classList.toggle("btn-ghost", !loginActive);
+    setupToggle.classList.toggle("btn-primary", createActive);
+    setupToggle.classList.toggle("btn-ghost", !createActive);
+}
+
+function setupAdminAuthOptions() {
+    const loginToggle = document.getElementById("adminAuthModeLogin");
+    const setupToggle = document.getElementById("adminAuthModeCreate");
+    if (!loginToggle || !setupToggle) return;
+
+    setAdminAuthMode("none");
+    loginToggle.addEventListener("click", () => setAdminAuthMode("login"));
+    setupToggle.addEventListener("click", () => setAdminAuthMode("create"));
+}
+
+async function setupAdminSetupForm() {
+    const setupForm = document.getElementById("adminSetupForm");
+    if (!setupForm) return;
+
+    const usernameInput = document.getElementById("adminSetupUsername");
+    const passwordInput = document.getElementById("adminSetupPassword");
+    const confirmInput = document.getElementById("adminSetupConfirmPassword");
+    const notice = document.getElementById("adminSetupNotice");
+
+    setupForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const username = usernameInput?.value.trim() || "";
+        const password = passwordInput?.value || "";
+        const confirmPassword = confirmInput?.value || "";
+        const submitButton = setupForm.querySelector("button[type='submit']");
+        if (submitButton) submitButton.disabled = true;
+
+        if (password !== confirmPassword) {
+            if (notice) {
+                notice.textContent = "Passwords do not match.";
+                notice.classList.add("notice-error");
+            }
+            if (submitButton) submitButton.disabled = false;
+            return;
+        }
+
+        if (notice) {
+            notice.textContent = "Creating admin account...";
+            notice.classList.remove("notice-error");
+        }
+
+        try {
+            await apiRequest("/api/admin/setup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+            if (notice) {
+                notice.textContent = "Creation confirmed. Redirecting...";
+                notice.classList.remove("notice-error");
+            }
+            setupForm.reset();
+            window.setTimeout(() => {
+                window.location.href = "admin.html";
+            }, 900);
+        } catch (error) {
+            const message = error.message || "Unable to create admin account right now.";
+            if (message.toLowerCase().includes("already completed")) {
+                setAdminAuthMode("login");
+                const loginNotice = document.getElementById("adminLoginNotice");
+                if (loginNotice) {
+                    loginNotice.textContent = "Admin account already exists. Please login.";
+                    loginNotice.classList.remove("notice-error");
+                }
+            }
+            if (notice) {
+                notice.textContent = message;
+                notice.classList.add("notice-error");
+            }
+        } finally {
+            if (submitButton) submitButton.disabled = false;
+        }
+    });
+}
+
+function setupAdminLogout() {
+    const logoutButton = document.getElementById("adminLogoutBtn");
+    if (!logoutButton) return;
+
+    logoutButton.addEventListener("click", async () => {
+        logoutButton.disabled = true;
+        try {
+            await fetch("/api/admin/logout", {
+                method: "POST"
+            });
+        } finally {
+            window.location.href = "admin-login.html";
+        }
+    });
+}
+
+async function verifyAdminSessionForDashboard() {
+    const adminTable = document.getElementById("adminUserTable");
+    if (!adminTable) return false;
+
+    try {
+        const response = await fetch("/api/admin/session");
+        if (!response.ok) {
+            window.location.href = "admin-login.html";
+            return false;
+        }
+        return true;
+    } catch (error) {
+        window.location.href = "admin-login.html";
+        return false;
+    }
+}
+
+function setupAdminAccessControl() {
+    setupAdminAuthOptions();
+    setupAdminLoginForm();
+    setupAdminSetupForm();
+    setupAdminLogout();
+}
+
+async function renderAdminReports() {
     const reportTable = document.getElementById("adminReportTable");
     if (!reportTable) return;
 
-    const reports = getProfiles(STORAGE_KEYS.reports);
+    let reports = [];
+    try {
+        const payload = await apiRequest("/api/admin/reports");
+        reports = Array.isArray(payload.reports) ? payload.reports : [];
+    } catch (error) {
+        reportTable.innerHTML = "";
+        const empty = document.getElementById("emptyReports");
+        if (empty) empty.textContent = error.message || "Unable to load reports.";
+        return;
+    }
     const openCount = reports.filter((entry) => entry.status !== "resolved").length;
     const openNode = document.getElementById("openReportsCount");
     if (openNode) openNode.textContent = String(openCount);
@@ -796,49 +957,40 @@ function renderAdminReports() {
     `).join("");
 
     reportTable.querySelectorAll("[data-resolve-report-id]").forEach((button) => {
-        button.addEventListener("click", () => resolveReport(button.dataset.resolveReportId));
+        button.addEventListener("click", async () => resolveReport(button.dataset.resolveReportId));
     });
 
     reportTable.querySelectorAll("[data-delete-report-id]").forEach((button) => {
-        button.addEventListener("click", () => deleteReport(button.dataset.deleteReportId));
+        button.addEventListener("click", async () => deleteReport(button.dataset.deleteReportId));
     });
 }
 
-function resolveReport(reportId) {
-    const reports = getProfiles(STORAGE_KEYS.reports);
-    const updated = reports.map((entry) => (
-        entry.id === reportId ? { ...entry, status: "resolved" } : entry
-    ));
-    setProfiles(STORAGE_KEYS.reports, updated);
-    renderAdminReports();
+async function resolveReport(reportId) {
+    await apiRequest(`/api/admin/reports/${encodeURIComponent(reportId)}/resolve`, {
+        method: "POST"
+    });
+    await renderAdminReports();
 }
 
-function deleteReport(reportId) {
-    const reports = getProfiles(STORAGE_KEYS.reports);
-    const updated = reports.filter((entry) => entry.id !== reportId);
-    setProfiles(STORAGE_KEYS.reports, updated);
-    renderAdminReports();
+async function deleteReport(reportId) {
+    await apiRequest(`/api/admin/reports/${encodeURIComponent(reportId)}`, {
+        method: "DELETE"
+    });
+    await renderAdminReports();
 }
 
-function approvePendingProfile(profileId) {
-    const pending = getProfiles(STORAGE_KEYS.pending);
-    const approved = getProfiles(STORAGE_KEYS.approved);
-    const match = pending.find((entry) => entry.id === profileId);
-    if (!match) return;
-
-    const updatedPending = pending.filter((entry) => entry.id !== profileId);
-    approved.push({ ...match, status: "approved" });
-
-    setProfiles(STORAGE_KEYS.pending, updatedPending);
-    setProfiles(STORAGE_KEYS.approved, approved);
-    renderAdminTable();
+async function approvePendingProfile(profileId) {
+    await apiRequest(`/api/admin/profiles/${encodeURIComponent(profileId)}/approve`, {
+        method: "POST"
+    });
+    await renderAdminTable();
 }
 
-function deletePendingProfile(profileId) {
-    const pending = getProfiles(STORAGE_KEYS.pending);
-    const updatedPending = pending.filter((entry) => entry.id !== profileId);
-    setProfiles(STORAGE_KEYS.pending, updatedPending);
-    renderAdminTable();
+async function deletePendingProfile(profileId) {
+    await apiRequest(`/api/admin/profiles/${encodeURIComponent(profileId)}`, {
+        method: "DELETE"
+    });
+    await renderAdminTable();
 }
 
 function bindHomeFilters() {
@@ -862,14 +1014,18 @@ function setYearText() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    initializeSeedData();
     await processStripeReturn();
     setYearText();
     bindHomeFilters();
     bindModalEvents();
     setupReportForm();
-    renderHomeProfiles();
+    await renderHomeProfiles();
     setupRegistrationForm();
-    renderAdminTable();
-    renderAdminReports();
+
+    const adminSessionValid = await verifyAdminSessionForDashboard();
+    if (adminSessionValid) {
+        await renderAdminTable();
+        await renderAdminReports();
+    }
+    setupAdminAccessControl();
 });
